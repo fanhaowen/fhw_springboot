@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fhw_springboot.Dao.MarginDao">
+    <resultMap id="MarginAmountConfigEntityMap" type="com.example.fhw_springboot.Entity.MarginAmountConfigEntity">
+        <result column="id" property="id" />
+        <result column="pop_id" property="popId" />
+        <result column="margin_amount_type" property="marginAmountType" />
+        <result column="margin_amount" property="marginAmount" />
+        <result column="each_bill_deduct_proportion" property="eachBillDeductProportion" />
+        <result column="c_t" property="ct" />
+        <result column="c_user_id" property="cUserId" />
+        <result column="c_user_name" property="cUserName" />
+        <result column="status" property="status" />
+        <result column="approve_user_id" property="approveUserId" />
+        <result column="approve_user" property="approveUser" />
+        <result column="u_t" property="ut" />
+        <result column="is_deleted" property="isDeleted" />
+
+    </resultMap>
+    <resultMap id="ruleStandardMap" type="com.example.fhw_springboot.Entity.RuleStandardEntity">
+        <result column="id" property="id" />
+        <result column="c1_id" property="c1Id" />
+        <result column="c1_name" property="c1Name" />
+        <result column="c2_id" property="c2Id" />
+        <result column="c2_name" property="c2Name" />
+        <result column="c3_id" property="c3Id" />
+        <result column="c3_name" property="c3Name" />
+        <result column="bi_id" property="biId" />
+        <result column="bi_name" property="biName" />
+        <result column="city_id" property="cityId" />
+        <result column="effective" property="effective" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="actual_end_time" property="actualEndTime" />
+        <result column="u_user_id" property="uUserId" />
+        <result column="u_user_name" property="uUserName" />
+        <result column="u_t" property="uT" />
+    </resultMap>
+    <resultMap id="allColumnMap" type="com.example.fhw_springboot.Entity.MarginConfigEntity">
+        <result column="id" property="id" />
+        <result column="pop_id" property="popId" />
+        <result column="receive_type" property="receiveType" />
+        <result column="config_type" property="configType" />
+        <result column="amount" property="amount" />
+        <result column="bill_rate" property="billRate" />
+        <result column="cooperative_mode" property="cooperativeMode" />
+        <result column="pop_type" property="popType" />
+        <result column="business_model" property="businessModel" />
+        <result column="c_t" property="cT" />
+        <result column="u_user_id" property="uUserId" />
+        <result column="u_user_name" property="uUserName" />
+        <result column="u_t" property="uT" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+    <resultMap id="BaseResultMap" type="com.example.fhw_springboot.Entity.MarginAmountEntity" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="pop_id" property="popId" jdbcType="INTEGER" />
+        <result column="charge_type" property="chargeType" jdbcType="TINYINT" />
+        <result column="rec_need_amount" property="recNeedAmount" jdbcType="DECIMAL" />
+        <result column="rule_id" property="ruleId" jdbcType="BIGINT" />
+        <result column="c_t" property="ct" jdbcType="INTEGER" />
+        <result column="u_t" property="ut" jdbcType="INTEGER" />
+        <result column="is_deleted" property="isDeleted" jdbcType="TINYINT" />
+    </resultMap>
+    <resultMap id="logMap" type="com.example.fhw_springboot.Entity.MarginConfigChangeLogEntity">
+        <result column="id" property="id" />
+        <result column="pop_id" property="popId" />
+        <result column="rule_detail_id" property="ruleDetailId" />
+        <result column="stat_info_id" property="statInfoId" />
+        <result column="config_amount" property="configAmount" />
+        <result column="gmv_amount" property="gmvAmount" />
+        <result column="trade_days" property="tradeDays" />
+        <result column="city_list" property="cityList" />
+        <result column="change_type" property="changeType" />
+        <result column="change_content" property="changeContent" />
+        <result column="c_t" property="cT" />
+        <result column="u_user_id" property="uUserId" />
+        <result column="u_user_name" property="uUserName" />
+        <result column="u_t" property="uT" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+    <sql id="all_columns">
+        id,pop_id,margin_amount_type,margin_amount,each_bill_deduct_proportion,c_t,c_user_id,c_user_name,status,approve_user_id,approve_user,u_t,is_deleted
+    </sql>
+
+    <sql id="table_name">
+        t_pop_margin_amount_config
+    </sql>
+    <sql id="query_where">
+        <if test="popId!=null">
+            and pop_id=#{popId}
+        </if>
+        <if test="popIdGroup != null and popIdGroup.size>0">
+            and pop_id in
+            <foreach collection="popIdGroup" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="chargeType!=null">
+            and charge_type = #{chargeType}
+        </if>
+        <if test="cooperativeMode!=null">
+            and cooperative_mode = #{cooperativeMode}
+        </if>
+        and is_deleted=0
+    </sql>
+    <select id="queryById" resultType="com.example.fhw_springboot.Entity.MarginAmountRefundEntity">
+        select
+            id,
+            pop_id AS popId,
+            amount,reason,
+            refund_time AS refundTime,
+            expect_refund_time AS expectRefundTime,
+            refund_delay_day AS refundDelayDay,
+            rec_account_code AS recAccountCode,
+            rec_account_name AS recAccountName,
+            rec_bank_name AS recBankName,
+            rec_bank_branch AS recBankBranch,
+            pay_account_code AS payAccountCode,
+            pay_account_name AS payAccountName,
+            pay_bank_name AS payBankName,
+            pay_bank_branch AS payBankBranch,
+            pay_bank_no AS payBankNo,
+            rec_bank_no AS recBankNo,
+            status,
+            c_user AS cUser,
+            approve_user AS approveUser,
+            c_t AS ct,
+            u_t AS ut,
+            bill_id AS billId,
+            debt_freeze_id AS debtFreezeId,
+            refund_type AS refundType
+        from
+            t_pop_margin_amount_refund
+        where id = #{id} and is_deleted=0
+    </select>
+    <select id="test" resultType="java.lang.Integer">
+        select settle_time from t_settlement_settle_cost where pop_id = #{popId} and period_bill_id != 0 and is_deleted = 0 limit 1
+    </select>
+
+    <select id="exitsUnSettleSettleCostRecord" resultType="java.lang.Integer">
+        select 1
+        from t_settlement_settle_cost
+        where pop_id=#{popId}
+          and is_deleted=0
+          and period_bill_id=0 and pay_money!=0 and receive_money!=0 and settle_time>#{settleTime}
+        limit 1
+    </select>
+    <select id="sumRefundAmount" resultType="com.example.fhw_springboot.Entity.MarginAmountSumEntity">
+        select
+        pop_id as popId,
+        sum(amount) as amount
+        from
+        t_pop_margin_amount_refund
+        <where>
+            <if test="popIds != null and popIds.length>0">
+                and pop_id in
+                <foreach collection="popIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="statusArr != null and statusArr.length>0">
+                and status in
+                <foreach collection="statusArr" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and is_deleted=0
+        </where>
+        group by pop_id
+    </select>
+    <select id="sumRecAmount" resultType="com.example.fhw_springboot.Entity.MarginAmountSumEntity">
+        select
+        pop_id as popId,
+        sum(amount) as amount
+        from
+        t_pop_margin_amount_rec
+        <where>
+            <if test="popIds != null and popIds.length>0">
+                and pop_id in
+                <foreach collection="popIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="statusArr != null and statusArr.length>0">
+                and status in
+                <foreach collection="statusArr" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and is_deleted=0
+        </where>
+        group by pop_id
+    </select>
+    <select id="selectCurrentMarginConfig" resultMap="MarginAmountConfigEntityMap">
+        select
+        <include refid="all_columns"/>
+        from
+        <include refid="table_name" />
+        where
+        is_deleted=0
+        and	pop_id = #{popId}
+        and status = 2
+        order by id desc
+        limit 0,1;
+    </select>
+
+    <select id="getRefundById" resultType="com.example.fhw_springboot.Entity.MarginAmountRefundModel">
+        select  id, pop_id popId from
+            t_pop_margin_amount_refund where  id = #{id}
+    </select>
+
+    <select id="getRefundInfoById" resultType="com.example.fhw_springboot.Entity.MarginAmountRefundModel">
+        select
+            id,
+            pop_id AS popId,
+            amount,reason,
+            refund_time AS refundTime,
+            expect_refund_time AS expectRefundTime,
+            refund_delay_day AS refundDelayDay,
+            bill_id AS billId,
+            finance_reason AS financeReason,
+            account_date AS accountDate,
+            approve_time AS approveTime,
+            debt_freeze_id AS debtFreezeId,
+            refund_type AS refundType,
+            status
+        from t_pop_margin_amount_refund
+        where id = #{id} and is_deleted=0
+    </select>
+    <select id="getAllConfig" resultMap="allColumnMap">
+        select * from t_margin_config where is_deleted = 0;
+    </select>
+    <select id="checkReceivingMargin" resultType="java.lang.Integer">
+        select 1 from t_pop_margin_amount_rec
+        where pop_id = #{popId} and status=0 and is_deleted=0
+    </select>
+    <select id="find" resultMap="BaseResultMap" parameterType="com.example.fhw_springboot.Entity.MarginQueryParamsDto">
+        select
+        m.id,
+        m.pop_id AS popId,
+        m.charge_type AS chargeType,
+        o.recNeedAmount,
+        m.rule_id AS ruleId,
+        m.c_t AS ct,
+        m.u_t AS ut
+        from  (select
+        Max(id) AS id,
+        sum(rec_need_amount) AS recNeedAmount
+        from
+        t_pop_margin_amount
+        where is_deleted=0
+        group by pop_id
+        ) o join t_pop_margin_amount m on o.id=m.id
+        <where>
+            <include refid="query_where"/>
+        </where>
+        <if test="pageEnable==true">
+            limit #{beginIndex},#{length}
+        </if>
+    </select>
+    <insert id="insert">
+        insert into t_margin_config
+        (pop_id, receive_type, config_type, amount, bill_rate, cooperative_mode, pop_type, business_model, u_user_id, u_user_name, c_t, u_t, is_deleted)
+        values
+        (#{popId}, 3, 1, 0, 100, #{cooperativeMode}, #{popType}, #{businessModel}, 0,'系统初始化', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 0)
+    </insert>
+    <update id="updateConfigForInit">
+        update t_margin_config set receive_type = #{marginAmountType}, amount = #{marginAmount}, bill_rate = #{eachBillDeductProportion}
+        where pop_id = #{popId}
+    </update>
+
+    <insert id="insertRule">
+        insert into t_margin_rule
+        (cooperative_mode, pop_type, business_model, rule_ver, u_user_id, u_user_name, c_t, u_t, is_deleted)
+        values
+        (#{cooperativeMode}, #{popType}, #{businessModel}, 0, 0, '系统初始化', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 0)
+    </insert>
+
+    <insert id="insertConfigChangeLog">
+        insert into t_margin_config_change_log
+        (pop_id, rule_detail_id, stat_info_id, config_amount, gmv_amount, trade_days, city_list, change_type, change_content, u_user_id, u_user_name, c_t, u_t, is_deleted)
+        values
+        (#{popId}, #{ruleDetailId}, #{statInfoId}, #{configAmount}, #{gmvAmount}, #{tradeDays}, #{cityList}, #{changeType}, #{changeContent}, #{uUserId}, #{uUserName}, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 0)
+
+    </insert>
+    <select id="queryConfigListPaging" resultMap="allColumnMap">
+        select * from t_margin_config where
+        <if test="entity.popId != null">
+            pop_id = #{entity.popId} and
+        </if>
+        <if test="entity.configType != null">
+            config_type = #{entity.configType} and
+        </if>
+        <if test="entity.receiveType != null">
+            receive_type = #{entity.receiveType} and
+        </if>
+        <if test="entity.cooperativeMode != null">
+            cooperative_mode = #{entity.cooperativeMode} and
+        </if>
+        <if test="entity.popType != null">
+            pop_type = #{entity.popType} and
+        </if>
+        <if test="entity.businessModel != null">
+            business_model = #{entity.businessModel} and
+        </if>
+        is_deleted = 0
+        limit #{offset}, #{length}
+    </select>
+    <select id="queryMarginConfigChangeLogByPopId" resultMap="logMap">
+        select * from t_margin_config_change_log where pop_id = #{popId} and is_deleted = 0;
+    </select>
+    <resultMap id="MarginRuleMap" type="com.example.fhw_springboot.Entity.MarginRuleEntity">
+        <result column="id" property="id" />
+        <result column="rule_ver" property="ruleVer" />
+        <result column="cooperative_mode" property="cooperativeMode" />
+        <result column="pop_type" property="popType" />
+        <result column="business_model" property="businessModel" />
+        <result column="u_user_id" property="uUserId" />
+        <result column="u_user_name" property="uUserName" />
+        <result column="c_t" property="cT" />
+        <result column="u_t" property="uT" />
+        <result column="is_deleted" property="isDeleted" />
+
+    </resultMap>
+    <select id="queryImportLog" resultMap="logMap">
+        select * from t_margin_config_import_log where status in
+        <foreach collection="status" separator="," item="item" open="(" close=")">
+            #{item.status}
+        </foreach>
+        and is_deleted = 0
+        <if test="forUpdate == true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="queryAllRule" resultMap="MarginRuleMap">
+        select * from t_margin_rule;
+    </select>
+
+    <insert id="insertRuleDetail">
+        insert into t_margin_rule_detail
+        (rule_id, rule_ver, max_amount, rule_type, config_amount, calculate_day, u_user_id, u_user_name, c_t, u_t, is_deleted)
+        values
+        (#{ruleId}, #{ruleVer}, #{maxAmount}, #{ruleType},#{configAmount}, #{calculateDay}, #{uUserId}, #{uUserName}, UNIX_TIMESTAMP(), UNIX_TIMESTAMP() , 0 )
+    </insert>
+    <select id="queryRuleByParam" resultMap="ruleStandardMap">
+        select * from t_settlement_rule_standard
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="c1Id != null">
+                and c1_id = #{c1Id}
+            </if>
+            <if test="c2Id != null">
+                and c2_id = #{c2Id}
+            </if>
+            <if test="c3Id != null">
+                and c3_id = #{c3Id}
+            </if>
+            <if test="biId != null">
+                and bi_id = #{biId}
+            </if>
+            <if test="cityId != null">
+                and city_id = #{cityId}
+            </if>
+            <if test="effective != null">
+                and effective = #{effective}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="endTime != null">
+                and end_time = #{endTime}
+            </if>
+            and is_deleted = 0
+            <if test="forUpdate != null and forUpdate == true">
+                for update
+            </if>
+        </where>
+    </select>
+</mapper>

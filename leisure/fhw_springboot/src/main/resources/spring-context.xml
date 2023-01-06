@@ -1,0 +1,9 @@
+<beans>
+    <bean id="mapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+        <property name="mappingFiles">
+            <list>
+                <value>classpath*:dozer-BeanMapping.xml</value>
+            </list>
+        </property>
+    </bean>
+</beans>

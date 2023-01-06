@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fhw_springboot.Dao.DebtDao">
+
+    <resultMap id="debtEntity" type="com.example.fhw_springboot.Entity.DebtEntity">
+        <result property="id" column="id"/>
+        <result property="popId" column="pop_id"/>
+        <result property="cityId" column="city_id"/>
+        <result property="amount" column="amount"/>
+        <result property="freezingAmount" column="freezing_amount"/>
+        <result property="cooperativeMode" column="cooperative_mode"/>
+        <result property="refBillId" column="ref_bill_id"/>
+        <result property="ct" column="c_t"/>
+        <result property="cUserId" column="c_user_id"/>
+        <result property="cUserName" column="c_user_name"/>
+        <result property="ut" column="u_t"/>
+        <result property="uUserId" column="u_user_id"/>
+        <result property="uUserName" column="u_user_name"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+    <!-- update the table by 'id' sql -->
+
+    <insert id="insert" useGeneratedKeys="true">
+        insert into t_settlement_debt (pop_id, city_id, amount, ref_bill_id, c_t, u_t, u_user_id, u_user_name, is_deleted, freezing_amount, producing_amount, cooperative_mode)
+        values (#{popId}, #{cityId}, #{amount}, #{refBillId}, unix_timestamp(), unix_timestamp(), #{uUserId}, #{uUserName}, 0, #{freezingAmount}, #{producingAmount}, #{cooperativeMode})
+    </insert>
+    <resultMap id="allColumnMap" type="com.example.fhw_springboot.Entity.MarginConfigEntity">
+        <result column="id" property="id" />
+        <result column="pop_id" property="popId" />
+        <result column="receive_type" property="receiveType" />
+        <result column="config_type" property="configType" />
+        <result column="amount" property="amount" />
+        <result column="bill_rate" property="billRate" />
+        <result column="cooperative_mode" property="cooperativeMode" />
+        <result column="pop_type" property="popType" />
+        <result column="business_model" property="businessModel" />
+        <result column="c_t" property="cT" />
+        <result column="u_user_id" property="uUserId" />
+        <result column="u_user_name" property="uUserName" />
+        <result column="u_t" property="uT" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+</mapper>
